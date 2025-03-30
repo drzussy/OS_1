@@ -97,19 +97,31 @@ int main(int argc, char* argv[]) {
     uint64_t repeat = *argv[3];
 
     for (uint64_t size = 100; size < max_size; size *= factor) {
-        //TODO initialize array of size='size'
-        char *arr = (char *) malloc(size * sizeof(char));
+        array_element_t *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
         if (arr == NULL) {
             std::cout << "Memory allocation failed for size " << size << std::endl;
             return EXIT_FAILURE;
         }
+        uint64_t times[4] = {0};
         for (uint64_t j = 0; j < repeat; j++) {
-            //TODO run random and sequential latency check on array
-
-            //TODO add to sum
+            //random latency check
+            struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
+            //sequential latency check
+            struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, size, zero);
+            //add to sums
+            times[0] += random_measurement.baseline;
+            times[1] += random_measurement.access_time;
+            times[2] += sequential_measurement.baseline;
+            times[3] += sequential_measurement.access_time;
         }
-
-        //TODO print out average latency results for each size
+        //calculate averages
+        for(int i=0;i<3;i++){
+            times[1] /= repeat;
+        }
+        //print out mem_size1(bytes),offset1(random access latency, ns),offset1(sequential access latency, ns)
+        std::cout << size << ","
+                  << times[0]-times[1] << "," // Random access latency
+                  << times[2]- times[3] << std::endl; // Sequential access latency
         free(arr);
     }
 }
