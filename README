@@ -1,0 +1,28 @@
+danemirovski, login2
+Student Dan Nemirovski (211358171), Student Name2 (ID2)
+EX: 1
+
+FILES:
+myfile.c -- a file with some code
+myfile.h -- a file with some headers
+
+REMARKS:
+These are some remarks that
+I want the graders to know
+about this submission.
+
+ANSWERS:
+
+Q1:
+The WhatIDo application requires one argument of any kind. If now argument is given then the app prints: "Error. The program should receive a single argument. Exiting.
+: Success".
+If one argument is given the application makes a new directory named "Welcome". Inside this directory the application will create three files: Welcome, To, OS-2024.
+In the first file the program will write myUserName ,newline If you haven't read....
+In the second file the program will write: Start exercises early!
+In the third file the program will write: Good luck!	
+Then the program will delete these three files, delete the directory "Welcome" and close.
+
+Q2:
+Here are answers to theoreical questions
+if there were such questions in the exercise.
+
