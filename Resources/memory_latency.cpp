@@ -97,8 +97,8 @@ int main(int argc, char* argv[]) {
     uint64_t repeat = *argv[3];
 
     for (uint64_t size = 100; size < max_size; size *= factor) {
-        array_element_t *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
-        if (arr == NULL) {
+        auto *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
+        if (arr == nullptr) {
             std::cout << "Memory allocation failed for size " << size << std::endl;
             return EXIT_FAILURE;
         }
