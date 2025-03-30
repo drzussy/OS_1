@@ -12,7 +12,7 @@
  */
 uint64_t nanosectime(struct timespec t)
 {
-	// Your code here
+    return (uint64_t)(t.tv_nsec+(uint64_t)t.tv_sec*(10 * 1000000000ULL));
 }
 
 /**
@@ -28,7 +28,10 @@ uint64_t nanosectime(struct timespec t)
 */
 struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* arr, uint64_t arr_size, uint64_t zero)
 {
-    // Your code here
+
+    struct measurement final_measurement;
+
+    return final_measurement;
 }
 
 /**
