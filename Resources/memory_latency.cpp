@@ -28,10 +28,44 @@ uint64_t nanosectime(struct timespec t)
 */
 struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* arr, uint64_t arr_size, uint64_t zero)
 {
+    //TODO change only two lines!
+    repeat = arr_size > repeat ? arr_size:repeat; // Make sure repeat >= arr_size
 
-    struct measurement final_measurement;
+    // Baseline measurement:
+    struct timespec t0;
+    timespec_get(&t0, TIME_UTC);
+    register uint64_t rnd=12345;
+    for (register uint64_t i = 0; i < repeat; i++)
+    {
+        register uint64_t index = i%arr_size;//this was changed!
+        rnd ^= index & zero; //??????
+        rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
+    }
+    struct timespec t1;
+    timespec_get(&t1, TIME_UTC);
 
-    return final_measurement;
+    // Memory access measurement:
+    struct timespec t2;
+    timespec_get(&t2, TIME_UTC);
+    rnd=(rnd & zero) ^ 12345;
+    for (register uint64_t i = 0; i < repeat; i++)
+    {
+        register uint64_t index = i%arr_size; //this was changed!
+        rnd ^= arr[index] & zero;
+        rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
+    }
+    struct timespec t3;
+    timespec_get(&t3, TIME_UTC);
+
+    // Calculate baseline and memory access times:
+    double baseline_per_cycle=(double)(nanosectime(t1)- nanosectime(t0))/(repeat);
+    double memory_per_cycle=(double)(nanosectime(t3)- nanosectime(t2))/(repeat);
+    struct measurement result;
+
+    result.baseline = baseline_per_cycle;
+    result.access_time = memory_per_cycle;
+    result.rnd = rnd;
+    return result;
 }
 
 /**
@@ -54,6 +88,21 @@ int main(int argc, char* argv[])
     struct timespec t_dummy;
     timespec_get(&t_dummy, TIME_UTC);
     const uint64_t zero = nanosectime(t_dummy)>1000000000ull?0:nanosectime(t_dummy);
+    //check input
+    if(argc != 4 || (int) *argv[1] < 100 || (float)*argv[2]< 1){
+        return EXIT_FAILURE;
+    }
+    //assume input ./memory_latency max_size factor repeat
+    int max_size = *argv[1];
+    float factor = *argv[2];
+    int repeat = *argv[3];
 
-    // Your code here
+    for(int size=100; size < max_size;size*=factor){
+        //TODO initialize array of size='size'
+        for(int j=0;j<repeat;j++){
+            //TODO run random and sequential laten  cy check on array
+        }
+        //TODO print out average latency results for each size
+    }
+
 }
