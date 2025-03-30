@@ -1,5 +1,6 @@
 // OS 2025 EX1
 
+#include <iostream>
 #include "memory_latency.h"
 #include "measure.h"
 
@@ -28,7 +29,6 @@ uint64_t nanosectime(struct timespec t)
 */
 struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* arr, uint64_t arr_size, uint64_t zero)
 {
-    //TODO change only two lines!
     repeat = arr_size > repeat ? arr_size:repeat; // Make sure repeat >= arr_size
 
     // Baseline measurement:
@@ -82,27 +82,34 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
  *              ...
  *              ...
  */
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     // zero==0, but the compiler doesn't know it. Use as the zero arg of measure_latency and measure_sequential_latency.
     struct timespec t_dummy;
     timespec_get(&t_dummy, TIME_UTC);
-    const uint64_t zero = nanosectime(t_dummy)>1000000000ull?0:nanosectime(t_dummy);
+    const uint64_t zero = nanosectime(t_dummy) > 1000000000ull ? 0 : nanosectime(t_dummy);
     //check input
-    if(argc != 4 || (int) *argv[1] < 100 || (float)*argv[2]< 1){
+    if (argc != 4 || (int) *argv[1] < 100 || (float) *argv[2] < 1) {
         return EXIT_FAILURE;
     }
     //assume input ./memory_latency max_size factor repeat
-    int max_size = *argv[1];
+    uint64_t max_size = *argv[1];
     float factor = *argv[2];
-    int repeat = *argv[3];
+    uint64_t repeat = *argv[3];
 
-    for(int size=100; size < max_size;size*=factor){
+    for (uint64_t size = 100; size < max_size; size *= factor) {
         //TODO initialize array of size='size'
-        for(int j=0;j<repeat;j++){
-            //TODO run random and sequential laten  cy check on array
+        char *arr = (char *) malloc(size * sizeof(char));
+        if (arr == NULL) {
+            std::cout << "Memory allocation failed for size " << size << std::endl;
+            return EXIT_FAILURE;
         }
-        //TODO print out average latency results for each size
-    }
+        for (uint64_t j = 0; j < repeat; j++) {
+            //TODO run random and sequential latency check on array
 
+            //TODO add to sum
+        }
+
+        //TODO print out average latency results for each size
+        free(arr);
+    }
 }
