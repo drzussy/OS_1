@@ -13,7 +13,7 @@
  */
 uint64_t nanosectime(struct timespec t)
 {
-    return (uint64_t)(t.tv_nsec+(uint64_t)t.tv_sec*(10 * 1000000000ULL));
+    return (uint64_t)t.tv_sec * 1000000000 + (uint64_t)t.tv_nsec;
 }
 
 /**
