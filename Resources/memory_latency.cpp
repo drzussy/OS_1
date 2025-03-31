@@ -87,10 +87,35 @@ int main(int argc, char* argv[]) {
     struct timespec t_dummy;
     timespec_get(&t_dummy, TIME_UTC);
     const uint64_t zero = nanosectime(t_dummy) > 1000000000ull ? 0 : nanosectime(t_dummy);
-    //check input
-    if (argc != 4 || (int) *argv[1] < 100 || (float) *argv[2] < 1) {
+
+    // Check if 4 arguments where given:
+    if (argc != 4) {
+        std::cerr << "Usage: " << argv[0] << "./memory_latency max_size factor repeat" << std::endl;
         return EXIT_FAILURE;
     }
+
+    // check max_size >= 100
+    char* endptr; 
+    uint64_t max_size = strtoull(argv[1], &endptr, 10);
+    if (*endptr != '\0' || max_size < 100) {
+        std::cerr << "Invalid max_size: should be max_size >= 10."<< std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // check factor > 1
+    double factor = strtod(argv[2], &endptr);
+    if (*endptr != '\0' || factor <= 1.0) {
+        std::cerr << "Invalid factor: should be factor > 1." << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    // check repeat > 0
+    uint64_t repeat = strtoull(argv[3], &endptr, 10);
+    if (*endptr != '\0' || repeat == 0) {
+        std::cerr << "Invalid repeat: should be repeat > 0." << std::endl;
+        return EXIT_FAILURE;
+    }
+
     //assume input ./memory_latency max_size factor repeat
     uint64_t max_size = *argv[1];
     float factor = *argv[2];
