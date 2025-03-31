@@ -20,7 +20,7 @@ uint64_t nanosectime(struct timespec t)
 * Measures the average latency of accessing a given array in a sequential order.
 * @param repeat - the number of times to repeat the measurement for and average on.
 * @param arr - an allocated (not empty) array to preform measurement on.
-* @param arr_size - the length of the array arr.return (uint64_t)(t.tv_sec * 1000000000ULL + t.tv_nsec);
+* @param arr_size - the length of the array arr.
 * @param zero - a variable containing zero in a way that the compiler doesn't "know" it in compilation time.
 * @return struct measurement containing the measurement with the following fields:
 *      double baseline - the average time (ns) taken to preform the measured operation without memory access.
