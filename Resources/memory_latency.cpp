@@ -116,11 +116,6 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    //assume input ./memory_latency max_size factor repeat
-    uint64_t max_size = *argv[1];
-    float factor = *argv[2];
-    uint64_t repeat = *argv[3];
-
     for (uint64_t size = 100; size < max_size; size *= factor) {
         auto *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
         if (arr == nullptr) {
