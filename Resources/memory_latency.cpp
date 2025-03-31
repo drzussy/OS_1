@@ -124,45 +124,11 @@ int main(int argc, char* argv[]) {
         }
         uint64_t times[4] = {0};
         for (uint64_t j = 0; j < repeat; j++) {
-            //random latency checkstruct measurement measure_latency(uint64_t repeat, array_element_t* arr, uint64_t arr_size, uint64_t zero){
-    repeat = arr_size > repeat ? arr_size:repeat; // Make sure repeat >= arr_size
-
-    // Baseline measurement:
-    struct timespec t0;
-    timespec_get(&t0, TIME_UTC);
-    register uint64_t rnd=12345;
-    for (register uint64_t i = 0; i < repeat; i++)
-    {
-        register uint64_t index = rnd % arr_size;
-        rnd ^= index & zero;
-        rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
-    }
-    struct timespec t1;
-    timespec_get(&t1, TIME_UTC);
-
-    // Memory access measurement:
-    struct timespec t2;
-    timespec_get(&t2, TIME_UTC);
-    rnd=(rnd & zero) ^ 12345;
-    for (register uint64_t i = 0; i < repeat; i++)
-    {
-        register uint64_t index = rnd % arr_size;
-        rnd ^= arr[index] & zero;
-        rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
-    }
-    struct timespec t3;
-    timespec_get(&t3, TIME_UTC);
-
-    // Calculate baseline and memory access times:
-    double baseline_per_cycle=(double)(nanosectime(t1)- nanosectime(t0))/(repeat);
-    double memory_per_cycle=(double)(nanosectime(t3)- nanosectime(t2))/(repeat);
-    struct measurement result;
-
-    result.baseline = baseline_per_cycle;
-    result.access_time = memory_per_cycle;
-    result.rnd = rnd;
-    return result;
-}
+            //random latency check
+            struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
+            //sequential latency check
+            struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, size, zero);
+            //add to sums
             times[0] += random_measurement.baseline;
             times[1] += random_measurement.access_time;
             times[2] += sequential_measurement.baseline;
