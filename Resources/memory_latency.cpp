@@ -143,4 +143,5 @@ int main(int argc, char* argv[]) {
                   << times[1]-times[0] << "," // Random access latency
                   << times[3]-times[2] << std::endl; // Sequential access latency
         free(arr);
+    }
 }
