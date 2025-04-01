@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
 
     // Check if 4 arguments where given:
     if (argc != 4) {
-        std::cerr << "Usage: " << argv[0] << "./memory_latency max_size factor repeat" << std::endl;
+        std::cerr << "Usage: ./memory_latency max_size factor repeat" << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
     char* endptr; 
     uint64_t max_size = strtoull(argv[1], &endptr, 10);
     if (*endptr != '\0' || max_size < 100) {
-        std::cerr << "Invalid max_size: should be max_size >= 10."<< std::endl;
+        std::cerr << "Invalid max_size: should be max_size >= 10." << std::endl;
         return EXIT_FAILURE;
     }
 
