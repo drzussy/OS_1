@@ -135,12 +135,12 @@ int main(int argc, char* argv[]) {
             times[3] += sequential_measurement.access_time;
         }
         //calculate averages
-        for(int i=0;i<3;i++){
-            times[1] /= repeat;
+        for(int i=0;i<4;i++){
+            times[i] /= repeat;
         }
         //print out mem_size1(bytes),offset1(random access latency, ns),offset1(sequential access latency, ns)
         std::cout << size << ","
-                  << times[0]-times[1] << "," // Random access latency
-                  << times[2]- times[3] << std::endl; // Sequential access latency
+                  << times[1]-times[0] << "," // Random access latency
+                  << times[3]-times[2] << std::endl; // Sequential access latency
         free(arr);
 }
