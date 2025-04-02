@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
 
         uint64_t arr_size = size/sizeof(array_element_t);
 
-        auto *arr = (array_element_t *) malloc(arr_size * sizeof(array_element_t));
+        auto *arr = (array_element_t *) malloc(size);
         if (arr == nullptr) {
             std::cout << "Memory allocation failed for size " << size << std::endl;
             return -1;
