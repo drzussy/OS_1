@@ -3,6 +3,7 @@
 #include <iostream>
 #include "memory_latency.h"
 #include "measure.h"
+#include <cmath>
 
 #define GALOIS_POLYNOMIAL ((1ULL << 63) | (1ULL << 62) | (1ULL << 60) | (1ULL << 59))
 
@@ -117,6 +118,9 @@ int main(int argc, char* argv[]) {
     }
 
     for (uint64_t size = 100; size < max_size; size *= factor) {
+
+        size=std::ceil(size);
+
         auto *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
         if (arr == nullptr) {
             std::cout << "Memory allocation failed for size " << size << std::endl;
@@ -129,26 +133,22 @@ int main(int argc, char* argv[]) {
         }
 
         double times[4] = {0.0};
+        
+        //sequential latency check
+        struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, size, zero);
+        //random latency check
+        struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
+        //add to sums
+        times[0] += random_measurement.baseline;
+        times[1] += random_measurement.access_time;
+        times[2] += sequential_measurement.baseline;
+        times[3] += sequential_measurement.access_time;
 
-        for (uint64_t j = 0; j < repeat; j++) {
-            //sequential latency check
-            struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, size, zero);
-            //random latency check
-            struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
-            //add to sums
-            times[0] += random_measurement.baseline;
-            times[1] += random_measurement.access_time;
-            times[2] += sequential_measurement.baseline;
-            times[3] += sequential_measurement.access_time;
-        }
-        //calculate averages
-        for(int i=0;i<4;i++){
-            times[i] /= repeat;
-        }
         //print out mem_size1(bytes),offset1(random access latency, ns),offset1(sequential access latency, ns)
         std::cout << size << ","
                   << times[1]-times[0] << "," // Random access latency
                   << times[3]-times[2] << std::endl; // Sequential access latency
         free(arr);
     }
+    return EXIT_SUCCESS;
 }
