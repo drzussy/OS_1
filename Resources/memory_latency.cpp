@@ -117,9 +117,7 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    for (uint64_t size = 100; size < max_size; size *= factor) {
-
-        size=std::ceil(size);
+    for (uint64_t size = 100; size < max_size; size=std::ceil(size*factor)) {
 
         auto *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
         if (arr == nullptr) {
