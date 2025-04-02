@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
     char* endptr; 
     uint64_t max_size = strtoull(argv[1], &endptr, 10);
     if (*endptr != '\0' || max_size < 100) {
-        std::cerr << "Invalid max_size: should be max_size >= 10." << std::endl;
+        std::cerr << "Invalid max_size: should be max_size >= 100." << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -124,8 +124,8 @@ int main(int argc, char* argv[]) {
         }
         
         // initialize array:
-        for(int i=0;i<size,i++){
-            arr[i]=i;
+        for(uint64_t i=0;i<size;i++){
+            arr[i]=(array_element_t)i;
         }
 
         uint64_t times[4] = {0};
