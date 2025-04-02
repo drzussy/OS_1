@@ -128,12 +128,13 @@ int main(int argc, char* argv[]) {
             arr[i]=(array_element_t)i;
         }
 
-        uint64_t times[4] = {0};
+        double times[4] = {0.0};
+
         for (uint64_t j = 0; j < repeat; j++) {
-            //random latency check
-            struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
             //sequential latency check
             struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, size, zero);
+            //random latency check
+            struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
             //add to sums
             times[0] += random_measurement.baseline;
             times[1] += random_measurement.access_time;
