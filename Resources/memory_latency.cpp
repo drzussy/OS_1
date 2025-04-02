@@ -122,6 +122,12 @@ int main(int argc, char* argv[]) {
             std::cout << "Memory allocation failed for size " << size << std::endl;
             return EXIT_FAILURE;
         }
+        
+        // initialize array:
+        for(int i=0;i<size,i++){
+            arr[i]=i;
+        }
+
         uint64_t times[4] = {0};
         for (uint64_t j = 0; j < repeat; j++) {
             //random latency check
