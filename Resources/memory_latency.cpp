@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
     // Check if 4 arguments where given:
     if (argc != 4) {
         std::cerr << "Usage: ./memory_latency max_size factor repeat" << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     }
 
     // check max_size >= 100
@@ -100,42 +100,44 @@ int main(int argc, char* argv[]) {
     uint64_t max_size = strtoull(argv[1], &endptr, 10);
     if (*endptr != '\0' || max_size < 100) {
         std::cerr << "Invalid max_size: should be max_size >= 100." << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     }
 
     // check factor > 1
     double factor = strtod(argv[2], &endptr);
     if (*endptr != '\0' || factor <= 1.0) {
         std::cerr << "Invalid factor: should be factor > 1." << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     }
 
     // check repeat > 0
     uint64_t repeat = strtoull(argv[3], &endptr, 10);
     if (*endptr != '\0' || repeat == 0) {
         std::cerr << "Invalid repeat: should be repeat > 0." << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     }
 
     for (uint64_t size = 100; size < max_size; size=std::ceil(size*factor)) {
 
-        auto *arr = (array_element_t *) malloc(size * sizeof(array_element_t));
+        uint64_t arr_size = size/sizeof(array_element_t);
+
+        auto *arr = (array_element_t *) malloc(arr_size * sizeof(array_element_t));
         if (arr == nullptr) {
             std::cout << "Memory allocation failed for size " << size << std::endl;
-            return EXIT_FAILURE;
+            return -1;
         }
         
         // initialize array:
-        for(uint64_t i=0;i<size;i++){
+        for(uint64_t i=0;i<arr_size;i++){
             arr[i]=(array_element_t)i;
         }
 
         double times[4] = {0.0};
         
         //sequential latency check
-        struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, size, zero);
+        struct measurement sequential_measurement = measure_sequential_latency(repeat, arr, arr_size, zero);
         //random latency check
-        struct measurement random_measurement = measure_latency(repeat, arr, size, zero);
+        struct measurement random_measurement = measure_latency(repeat, arr, arr_size, zero);
         //add to sums
         times[0] += random_measurement.baseline;
         times[1] += random_measurement.access_time;
