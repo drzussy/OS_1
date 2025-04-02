@@ -112,9 +112,9 @@ int main(int argc, char* argv[]) {
 
     // check repeat > 0
     uint64_t repeat = strtoull(argv[3], &endptr, 10);
-    if (*endptr != '\0' || repeat == 0) {
-        std::cerr << "Invalid repeat: should be repeat > 0." << std::endl;
-        return -1;
+    if (*endptr != '\0' || *argv[3] == '-' || repeat == 0) {
+        std::cerr << "Invalid repeat: should be a positive natural number greater than 0." << std::endl;
+        return EXIT_FAILURE; 
     }
 
     for (uint64_t size = 100; size < max_size; size=std::ceil(size*factor)) {
