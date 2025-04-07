@@ -37,3 +37,8 @@ surpasses the L2 and L3 cache sizes respectively. This can be explained in the e
 memory. And in the sequential case we see the same access times as in the L1 case as expected.
 This graph clearly demonstrates the access times of different memory components in the random case (which bypasses any optimizations).
 In the sequential case we see same access times using hardware optimizations.
+
+
+Bonus:
+
+Beyond the L3 cache size,we can see from the graph that random access latency initially increases as data is fetched from RAM instead of L3. The Page Table Eviction Threshold marks the point where the page table entries required for address translation also begin to miss the L3 cache frequently. Past this threshold, each random data access often requires two RAM accesses (one for the page table entry, one for the data), causing a further significant rise in latency.
