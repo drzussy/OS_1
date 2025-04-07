@@ -1,4 +1,4 @@
-danemirovski, login2
+danemirovski,Noam.susman
 Student Dan Nemirovski (211358171), Student Noam Susman (318528304)
 EX: 1
 
@@ -23,6 +23,17 @@ In the third file the program will write: Good luck!
 Then the program will delete these three files, delete the directory "Welcome" and close.
 
 Q2:
-Here are answers to theoreical questions
-if there were such questions in the exercise.
-
+In the graph we see that for array of sizes less than 32 KiB, the sequential and random access times are roughly the same.
+As expected because in both random and sequential cases the arrays fit into L1 cache and thus the access times are roughly one nano second
+which is the expected access times of L1 cache.
+For array sizes from 32 to 250 KiB we can see from the graph that access times in the random access case have grown and in the sequential case
+stayed the same. This can be explained by the use of hardware prefetching for the sequential case which optimizes the access times for
+sequential cells in the array. Thus the access times for the sequential case stay roughly the same as in the case for array sizes below 32 KiB
+which are the L1 access times. In the random case the program uses a slower L2 cache for storing the array, and as such the access times for 
+arrays of this size has grown compared to the L1 cache access times which can be clearly seen in the graph. Note that not all of the array is 
+stored in L2 caches. This can be seen by steady growth and not a clear step in the graph.
+Similarly for array sizes between 250 KiB to 9 MiB and 9 Mib and up, we see another growth in the random access times when the array size 
+surpasses the L2 and L3 cache sizes respectively. This can be explained in the exact way, with lower access times of the L3 cache and RAM 
+memory. And in the sequential case we see the same access times as in the L1 case as expected.
+This graph clearly demonstrates the access times of different memory components in the random case (which bypasses any optimizations).
+In the sequential case we see same access times using hardware optimizations.
