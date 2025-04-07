@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
     }
 
     // check factor > 1
-    double factor = strtod(argv[2], &endptr);
+    float factor = strtod(argv[2], &endptr);
     if (*endptr != '\0' || factor <= 1.0) {
         std::cerr << "Invalid factor: should be factor > 1." << std::endl;
         return -1;

@@ -3,8 +3,14 @@ Student Dan Nemirovski (211358171), Student Noam Susman (318528304)
 EX: 1
 
 FILES:
-myfile.c -- a file with some code
-myfile.h -- a file with some headers
+Makefile
+measure.cpp
+measure.h
+memory_latency.cpp
+memory_latency.h
+plot_example.py
+lscpu.png
+results.png
 
 REMARKS:
 These are some remarks that
