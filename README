@@ -4,13 +4,11 @@ EX: 1
 
 FILES:
 Makefile
-measure.cpp
-measure.h
 memory_latency.cpp
-memory_latency.h
 plot_example.py
 lscpu.png
 results.png
+page_size.png
 
 REMARKS:
 These are some remarks that
